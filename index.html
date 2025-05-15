@@ -14,7 +14,7 @@
   <h1>Analisis Gambar dengan Gemini</h1>
   <input type="file" id="imageInput" accept="image/*" />
   <button onclick="sendImageToGemini()">Buat Prompt dari Gambar</button>
-  <div id="response"></div>
+  <div id="response">Tidak ada respons.</div>
 
   <script>
     async function sendImageToGemini() {
@@ -28,9 +28,12 @@
 
       responseDiv.textContent = "Mengunggah dan menganalisis gambar...";
 
+      const file = fileInput.files[0];
       const reader = new FileReader();
+
       reader.onload = async function () {
         const base64Image = reader.result.split(',')[1];
+        const mimeType = file.type;
 
         try {
           const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=AIzaSyAPBnyyxeX92tTf_mvdfLPTAd-nopazuNs", {
@@ -42,7 +45,7 @@
                   parts: [
                     {
                       inlineData: {
-                        mimeType: "image/jpeg",
+                        mimeType: mimeType,
                         data: base64Image
                       }
                     },
@@ -63,7 +66,7 @@
         }
       };
 
-      reader.readAsDataURL(fileInput.files[0]);
+      reader.readAsDataURL(file);
     }
   </script>
 </body>
