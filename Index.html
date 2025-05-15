@@ -1,70 +1,38 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gambar ke Prompt (Gemini)</title>
-  <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    textarea, button, input { width: 100%; margin: 10px 0; padding: 10px; }
-    #response { white-space: pre-wrap; background: #f3f3f3; padding: 10px; min-height: 100px; }
-  </style>
-</head>
-<body>
-  <h1>Analisis Gambar dengan Gemini</h1>
-  <input type="file" id="imageInput" accept="image/*" />
-  <button onclick="sendImageToGemini()">Buat Prompt dari Gambar</button>
-  <div id="response"></div>
-
-  <script>
-    async function sendImageToGemini() {
-      const fileInput = document.getElementById("imageInput");
-      const responseDiv = document.getElementById("response");
-
-      if (!fileInput.files[0]) {
-        responseDiv.textContent = "Silakan unggah gambar terlebih dahulu.";
-        return;
-      }
-
-      responseDiv.textContent = "Mengunggah dan menganalisis gambar...";
-
-      const reader = new FileReader();
-      reader.onload = async function () {
-        const base64Image = reader.result.split(',')[1];
-
-        try {
-          const res = await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-pro-vision:generateContent?key=AIzaSyAPBnyyxeX92tTf_mvdfLPTAd-nopazuNs", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
-                    {
-                      inlineData: {
-                        mimeType: "image/jpeg",
-                        data: base64Image
-                      }
-                    },
-                    {
-                      text: "Deskripsikan gambar ini dalam bentuk prompt yang cocok untuk AI generator gambar."
-                    }
-                  ]
-                }
-              ]
-            })
-          });
-
-          const data = await res.json();
-          const reply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Tidak ada respons.";
-          responseDiv.textContent = reply;
-        } catch (err) {
-          responseDiv.textContent = "Terjadi kesalahan: " + err.message;
-        }
-      };
-
-      reader.readAsDataURL(fileInput.files[0]);
-    }
-  </script>
-</body>
+<html> 
+ 
+ <head> 
+ <title> Demo HTML Page </title> 
+ </head> 
+ 
+ <body> 
+ <div class = 'logo' > 
+ <b> &lt; html &gt; </b> 
+ <br> 
+ E d i t o r 
+ </div> 
+ </body> 
+ 
+ <style> 
+ @import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@500&display=swap'); 
+ body{ 
+ font-family: 'Quicksand', sans-serif; 
+ background: linear-gradient( to right, dodgerblue 0%, deepskyblue 100%); 
+ color: white; 
+ } 
+ .logo{ 
+ text-align: center; 
+ font-size: 50px; 
+ margin-top: 100px; 
+ } 
+ body b{ 
+ font-size: 60px; 
+ } 
+ </style> 
+ 
+ <script> 
+ for(let i=0; i<10; i++){ 
+ console.log("Value of i = " + i); 
+ } 
+ </script> 
+ 
 </html>
